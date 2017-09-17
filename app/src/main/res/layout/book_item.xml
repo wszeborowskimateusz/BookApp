@@ -8,8 +8,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_dark"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="16dp">
 
         <LinearLayout
@@ -51,12 +51,23 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_light"
-        android:padding="16dp"
-        tools:text="Lorem ipsum dolor sit amet, est id euismod partiendo. Tation homero aliquid ea vis. Ei vix dicat commodo. Sit mediocrem adversarium in." />
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description"/>
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:ellipsize="end"
+            tools:text="Lorem ipsum dolor sit amet, est id euismod partiendo sit amet, est id euismod partiendo sit amet, est id euismod partiendo sit amet, est id euismod partiendo. Tation homero aliquid ea vis. Ei vix dicat commodo. Sit mediocrem adversarium in." />
+    </LinearLayout>
 </LinearLayout>
