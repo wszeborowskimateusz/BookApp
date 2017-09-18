@@ -2,14 +2,16 @@ package com.example.android.bookapp;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -55,6 +57,20 @@ public class MainActivity extends AppCompatActivity
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         view.setEmptyView(mEmptyStateTextView);
 
+        view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /*If a link to a book is available we sent an Intent to open the link in a browser*/
+                if(!TextUtils.isEmpty(adapt.getItem(position).getmURL())) {
+                    Uri webpage = Uri.parse(adapt.getItem(position).getmURL());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+
         // Get a reference to the LoaderManager, in order to interact with loaders.
         final LoaderManager loaderManager = getLoaderManager();
 
@@ -87,7 +103,6 @@ public class MainActivity extends AppCompatActivity
                         customURL = GOOGLE_URL;
 
                         customURL = customURL.replace("q=","q="+usersInput);
-                        Log.v("Main Activity","customURL = "+customURL);
 
 
                         getLoaderManager().restartLoader(BOOKS_LOADER_ID, null, MainActivity.this);

@@ -15,16 +15,21 @@ public class Book {
     /*Description of a single book*/
     private String mDescription;
 
+    /*URL to check the book*/
+    private String mURL;
+
     /**
      * Public constructor to create a single book
      * @param mTitle is the title of a book
      * @param mAuthor is the author of a book
      * @param mDescription is a descriptionof a book
+     * @param mURL  is a URL for a book
      */
-    public Book(String mTitle, String mAuthor, String mDescription) {
+    public Book(String mTitle, String mAuthor, String mDescription, String mURL) {
         this.mTitle = mTitle;
         this.mAuthor = mAuthor;
         this.mDescription = mDescription;
+        this.mURL = mURL;
     }
 
     /**
@@ -46,5 +51,12 @@ public class Book {
      */
     public String getmDescription() {
         return mDescription;
+    }
+
+    /**
+     * @return the URL of a book
+     */
+    public String getmURL() {
+        return mURL;
     }
 }

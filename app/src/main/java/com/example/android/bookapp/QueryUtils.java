@@ -115,12 +115,16 @@ public class QueryUtils {
                         author += " ";
                     }
                 }
-                // Extract the value for the key called "url"
-                String url = currentBook.getString("previewLink");
+
+                String url = "";
+                if(currentBook.has("previewLink")) {
+                    // Extract the value for the key called "url"
+                     url = currentBook.getString("previewLink");
+                }
 
                 // Create a new {@link Earthquake} object with the magnitude, location, time,
                 // and url from the JSON response.
-                Book book = new Book(title,author,description);
+                Book book = new Book(title,author,description,url);
 
                 // Add the new {@link Earthquake} to the list of earthquakes.
                 books.add(book);
