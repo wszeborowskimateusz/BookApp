@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,6 +34,9 @@ public class MainActivity extends AppCompatActivity
     /*ID of books loader we will use to load books from server*/
     private static final int BOOKS_LOADER_ID = 1;
 
+    /** TextView that is displayed when the list is empty */
+    private TextView mEmptyStateTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,9 @@ public class MainActivity extends AppCompatActivity
         /*Find the ListView to set the adapter on*/
         ListView view = (ListView) findViewById(R.id.books_list);
         view.setAdapter(adapt);
+
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        view.setEmptyView(mEmptyStateTextView);
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
         final LoaderManager loaderManager = getLoaderManager();
@@ -97,8 +104,8 @@ public class MainActivity extends AppCompatActivity
         //ProgressBar bar = (ProgressBar)findViewById(R.id.progress_bar);
         //bar.setVisibility(View.GONE);
 
-        // Set empty state text to display "No books found."
-        //mEmptyStateTextView.setText(R.string.no_earthquakes);
+        //Set empty state text to display "No books found."
+        mEmptyStateTextView.setText(R.string.no_books);
 
         // Clear the adapter of previous book data
         adapt.clear();

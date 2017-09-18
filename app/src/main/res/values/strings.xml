@@ -6,4 +6,5 @@
     <string name="search">Search</string>
     <string name="search_bar">Write the text you want to search for</string>
     <string name="no_destription">There is no description for this book.</string>
+    <string name="no_books">No books found</string>
 </resources>
