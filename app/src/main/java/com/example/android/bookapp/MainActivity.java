@@ -5,6 +5,7 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,9 @@ public class MainActivity extends AppCompatActivity
 
     /*The URL we will edit in order to search for specific books*/
     private static String GOOGLE_URL = "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=10";
+
+    /*The specific URL with specific books to be find*/
+    private String customURL;
 
     /*Adapter to hand in books for ListView*/
     private BookAdapter adapt;
@@ -41,6 +45,9 @@ public class MainActivity extends AppCompatActivity
         ListView view = (ListView) findViewById(R.id.books_list);
         view.setAdapter(adapt);
 
+        // Get a reference to the LoaderManager, in order to interact with loaders.
+        final LoaderManager loaderManager = getLoaderManager();
+
         /*Finding the search button*/
         Button searchButton = (Button)findViewById(R.id.search_button);
         /*Add effect on click in order to fetch specific data(books) from server*/
@@ -58,10 +65,13 @@ public class MainActivity extends AppCompatActivity
                     usersInput = "\"" + usersInput;
                     usersInput = usersInput.replaceAll(" ","+");
                     usersInput+="\"";
+                    customURL = GOOGLE_URL;
 
-                    // Get a reference to the LoaderManager, in order to interact with loaders.
-                    LoaderManager loaderManager = getLoaderManager();
+                    customURL = customURL.replace("q=","q="+usersInput);
+                    Log.v("Main Activity","customURL = "+customURL);
 
+
+                    getLoaderManager().restartLoader(BOOKS_LOADER_ID, null, MainActivity.this);
                     // Initialize the loader. Pass in the int ID constant defined above and pass in null for
                     // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
                     // because this activity implements the LoaderCallbacks interface).
@@ -78,7 +88,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Loader<List<Book>> onCreateLoader(int i, Bundle bundle) {
         // Create a new loader for the given URL
-        return new BooksLoader(this, GOOGLE_URL);
+        return new BooksLoader(this, customURL);
     }
 
     @Override
@@ -87,12 +97,12 @@ public class MainActivity extends AppCompatActivity
         //ProgressBar bar = (ProgressBar)findViewById(R.id.progress_bar);
         //bar.setVisibility(View.GONE);
 
-        // Set empty state text to display "No earthquakes found."
+        // Set empty state text to display "No books found."
         //mEmptyStateTextView.setText(R.string.no_earthquakes);
 
-        // Clear the adapter of previous earthquake data
+        // Clear the adapter of previous book data
         adapt.clear();
-        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // If there is a valid list of {@link Book}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (books != null && !books.isEmpty()) {
             adapt.addAll(books);

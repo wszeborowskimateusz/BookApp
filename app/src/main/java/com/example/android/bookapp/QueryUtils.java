@@ -94,8 +94,11 @@ public class QueryUtils {
                 // for that book.
                 JSONObject currentBook = currentBookInfo.getJSONObject("volumeInfo");
 
-                // Extract the value for the key called "title"
-                String title = currentBook.getString("title");
+                String title = "There is no title for this book";
+                if(currentBook.has("title")){
+                    // Extract the value for the key called "title"
+                    title = currentBook.getString("title");
+                }
 
                 String description = "There is no description for this book.";
                 if(currentBook.has("description")){
@@ -103,11 +106,14 @@ public class QueryUtils {
                     description = currentBook.getString("description");
                 }
 
-                String author="";
-                JSONArray authors = currentBook.getJSONArray("authors");
-                for(int j=0;j<authors.length();j++){
-                    author += authors.get(j).toString();
-                    author+=" ";
+                String author="There are no author for this book";
+                if(currentBook.has("authors")) {
+                    author = "";
+                    JSONArray authors = currentBook.getJSONArray("authors");
+                    for (int j = 0; j < authors.length(); j++) {
+                        author += authors.get(j).toString();
+                        author += " ";
+                    }
                 }
                 // Extract the value for the key called "url"
                 String url = currentBook.getString("previewLink");
