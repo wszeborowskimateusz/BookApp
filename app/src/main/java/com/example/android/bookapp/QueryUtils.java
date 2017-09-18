@@ -35,7 +35,9 @@ public class QueryUtils {
     }
 
     /**
-     * Query the Google dataset and return an {@link List<Book>} object to represent a single earthquake.
+     * Query the Google dataset
+     * @return an {@link List<Book>} object to represent a single book.
+     * @param requestUrl is a String url to perform a HTTP Request
      */
     public static List<Book> fetchBooksData(String requestUrl) {
 
@@ -50,7 +52,7 @@ public class QueryUtils {
             Log.e(LOG_TAG, "Error closing input stream", e);
         }
 
-        // Extract relevant fields from the JSON response and create an {@link Event} object
+        // Extract relevant fields from the JSON response and create an {@link List<Book>} object
         List<Book> books = extractFeatureFromJson(jsonResponse);
 
         // Return the {@link Event}
@@ -58,8 +60,9 @@ public class QueryUtils {
     }
 
     /**
-     * Return a list of {@link Book} objects that has been built up from
+     * @return  a list of {@link Book} objects that has been built up from
      * parsing the given JSON response.
+     * @param bookJSON is a JSON String from witch we will create a list of books
      */
     private static List<Book> extractFeatureFromJson(String bookJSON) {
         // If the JSON string is empty or null, then return early.
@@ -67,7 +70,7 @@ public class QueryUtils {
             return null;
         }
 
-        // Create an empty ArrayList that we can start adding earthquakes to
+        // Create an empty ArrayList that we can start adding books to
         List<Book> books = new ArrayList<>();
 
         // Try to parse the JSON response string. If there's a problem with the way the JSON
@@ -111,6 +114,7 @@ public class QueryUtils {
                     author = "";
                     JSONArray authors = currentBook.getJSONArray("authors");
                     for (int j = 0; j < authors.length(); j++) {
+                        // Extract the value for the key called "authors"
                         author += authors.get(j).toString();
                         author += " ";
                     }
@@ -122,11 +126,11 @@ public class QueryUtils {
                      url = currentBook.getString("previewLink");
                 }
 
-                // Create a new {@link Earthquake} object with the magnitude, location, time,
+                // Create a new {@link Book} object with the title, authors, description,
                 // and url from the JSON response.
                 Book book = new Book(title,author,description,url);
 
-                // Add the new {@link Earthquake} to the list of earthquakes.
+                // Add the new {@link Book} to the list of books.
                 books.add(book);
             }
 
@@ -137,12 +141,13 @@ public class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 
-        // Return the list of earthquakes
+        // Return the list of books
         return books;
     }
 
     /**
-     * Returns new URL object from the given string URL.
+     * @return new URL object from the given string URL.
+     * @param stringUrl is an String url to be converted into {@link URL} Object
      */
     private static URL createUrl(String stringUrl) {
         URL url = null;
@@ -157,6 +162,8 @@ public class QueryUtils {
 
     /**
      * Make an HTTP request to the given URL and return a String as the response.
+     * @return JSON String file to extract information about books
+     * @param url is an URL to perform an HTTP Request
      */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
@@ -194,6 +201,8 @@ public class QueryUtils {
     /**
      * Convert the {@link InputStream} into a String which contains the
      * whole JSON response from the server.
+     * @return The JSON String built from InputStream
+     * @param inputStream the ImputStream from witch we will create a String object
      */
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();

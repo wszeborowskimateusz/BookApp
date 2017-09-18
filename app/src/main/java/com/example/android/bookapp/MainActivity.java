@@ -48,15 +48,22 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        final ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        /*Fill adapter with empty list*/
         adapt = new BookAdapter(this,new ArrayList<Book>());
 
         /*Find the ListView to set the adapter on*/
         ListView view = (ListView) findViewById(R.id.books_list);
         view.setAdapter(adapt);
 
+        /*Set the empty textView on ListView*/
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         view.setEmptyView(mEmptyStateTextView);
 
+        /*After pressing the book a link with more information is oppened*/
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -76,6 +83,7 @@ public class MainActivity extends AppCompatActivity
 
         /*Finding the search button*/
         Button searchButton = (Button)findViewById(R.id.search_button);
+
         /*Add effect on click in order to fetch specific data(books) from server*/
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,18 +91,17 @@ public class MainActivity extends AppCompatActivity
                 /*Finding the EditView to read users Input*/
                 EditText input = (EditText)v.getRootView().findViewById(R.id.search_bar);
                 usersInput = input.getText().toString();
+
+                /*If user typed anything we will search for matching books. If not we will display Toast msg*/
                 if(TextUtils.isEmpty(usersInput)){
                     Toast.makeText(MainActivity.this,"You have to put some text",Toast.LENGTH_SHORT).show();
                 }
                 else{
 
-                    // Get a reference to the ConnectivityManager to check state of network connectivity
-                    ConnectivityManager connMgr = (ConnectivityManager)
-                            getSystemService(Context.CONNECTIVITY_SERVICE);
-
                     // Get details on the currently active default data network
                     NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+                    /*If there is an Internet connection*/
                     if (networkInfo != null && networkInfo.isConnected()) {
                         /*Format string so it can fit the query*/
                         usersInput = "\"" + usersInput;
@@ -111,6 +118,7 @@ public class MainActivity extends AppCompatActivity
                         // because this activity implements the LoaderCallbacks interface).
                         loaderManager.initLoader(BOOKS_LOADER_ID, null, MainActivity.this);
                     }
+                    /*If there is no Internet connection we display "No Internet Connection" msg*/
                     else{
                         // Update empty state with no connection error message
                         mEmptyStateTextView.setText(R.string.no_internet);
@@ -119,9 +127,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
-
-
     }
 
     @Override
