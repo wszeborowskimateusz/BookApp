@@ -81,6 +81,8 @@ public class QueryUtils {
             // Create a JSONObject from the JSON response string
             JSONObject baseJsonResponse = new JSONObject(bookJSON);
 
+            if(baseJsonResponse.getInt("totalItems") == 0)return null;
+
             // Extract the JSONArray associated with the key called "items",
             // which represents a list of items (or books).
             JSONArray booksArray = baseJsonResponse.getJSONArray("items");
